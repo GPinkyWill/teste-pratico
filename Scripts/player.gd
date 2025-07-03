@@ -2,10 +2,18 @@ extends CharacterBody2D
 
 const speed = 100
 const friction = 540
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var sprite_2d: Sprite2D = $Sprite2D
+
 @onready var attack_timer: Timer = $Attack_Timer
 var is_attacking = false
 var atk_oneshot = false
+
+var player_health = 5
+var damage_atk = 2
+
+
+
 
 func _physics_process(delta: float) -> void:
 	var input_axis_h = Input.get_axis("ui_left","ui_right")
@@ -17,11 +25,10 @@ func _physics_process(delta: float) -> void:
 	
 	
 func player_movement(input_axis_h,input_axis_v,delta):
-	
 	if input_axis_h != 0:
 		velocity.x = speed * input_axis_h
 		#Vai garantir que o sprite esteja na direção correta caso vire ou se mova para cima ou para baixo
-		animated_sprite_2d.scale.x = sign(input_axis_h)
+		sprite_2d.scale.x = sign(input_axis_h)
 	else:
 		velocity.x = move_toward(velocity.x, 0 , friction * delta)
 		
@@ -34,19 +41,19 @@ func player_movement(input_axis_h,input_axis_v,delta):
 func player_attack():
 	if Input.is_action_just_pressed("ui_attack") and not is_attacking:
 		is_attacking = true
-		
+	
 
 func update_animations (input_axis_h,input_axis_v):
 	if not is_attacking:
 		if input_axis_h != 0 or input_axis_v != 0:
-			animated_sprite_2d.play("walk_01")
+			animation_player.play("walk_01")
 			
 		else:
-			animated_sprite_2d.play("idle")
+			animation_player.play("idle")
 	if is_attacking and not atk_oneshot:
 		attack_timer.start()
 		print(attack_timer.time_left)
-		animated_sprite_2d.play("attack_front")
+		animation_player.play("attack_front")
 		atk_oneshot = true
 		
 
