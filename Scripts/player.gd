@@ -52,7 +52,6 @@ func update_animations (input_axis_h,input_axis_v):
 			animation_player.play("idle")
 	if is_attacking and not atk_oneshot:
 		attack_timer.start()
-		print(attack_timer.time_left)
 		animation_player.play("attack_front")
 		atk_oneshot = true
 		
@@ -61,4 +60,3 @@ func update_animations (input_axis_h,input_axis_v):
 func _on_attack_timer_timeout() -> void:
 	is_attacking = false
 	atk_oneshot = false
-	print("para de atacar")
