@@ -19,6 +19,11 @@ func _physics_process(delta: float) -> void:
 func update_animations():
 	if _is_dead: return
 	
+	if velocity.x > 0:
+		sprite_2d.scale.x = 1
+	elif velocity.x < 0:
+		sprite_2d.scale.x = -1
+		
 	if !_is_on_fight:
 		if velocity != Vector2.ZERO:
 			animation_player.play("walk")
@@ -35,10 +40,7 @@ func update_animations():
 		_got_hurt = false
 		
 		
-	if velocity.x > 0:
-		sprite_2d.flip_h = false
-	elif velocity.x < 0:
-		sprite_2d.flip_h = true
+	
 	
 func take_damage(damage_received):
 	_got_hurt = true

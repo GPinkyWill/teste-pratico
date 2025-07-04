@@ -16,6 +16,9 @@ func Physics_Update(delta:float):
 			Transitioned.emit(self,"Death")
 	if direction.length() < 75:
 		enemy._is_on_fight = true
+		if player._is_dead:
+			Transitioned.emit(self,"Idle")
+			enemy._is_on_fight = false
 	else:
 		enemy._is_on_fight = false
 		Transitioned.emit(self,"Follow")

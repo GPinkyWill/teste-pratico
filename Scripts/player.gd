@@ -6,11 +6,16 @@ const friction = 540
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
 @onready var attack_timer: Timer = $Attack_Timer
+
+@onready var hurt_timer: Timer = $Hurt_Timer
+
+
 var is_attacking = false
 var atk_oneshot = false
 
 var player_health = 50
 var _got_hurt = false
+var _got_hurt_oneshot = true
 var _is_dead = false
 
 
@@ -28,6 +33,7 @@ func _physics_process(delta: float) -> void:
 	
 func player_movement(input_axis_h,input_axis_v,delta):
 	if _is_dead: return
+	
 	if input_axis_h != 0:
 		velocity.x = speed * input_axis_h
 		#Vai garantir que o sprite esteja na direção correta caso vire ou se mova para cima ou para baixo
@@ -48,27 +54,39 @@ func player_attack():
 
 func update_animations (input_axis_h,input_axis_v):
 	if _is_dead: return
-	if not is_attacking:
+	
+	if !is_attacking and !_got_hurt:
 		if input_axis_h != 0 or input_axis_v != 0:
 			animation_player.play("walk_01")
-			
 		else:
 			animation_player.play("idle")
-	if is_attacking and not atk_oneshot:
+
+	if is_attacking and !atk_oneshot:
 		attack_timer.start()
 		animation_player.play("attack_front")
 		atk_oneshot = true
-	if _got_hurt:
+		
+	if _got_hurt and _got_hurt_oneshot:
 		animation_player.play("hurt")
-		_got_hurt = false
+		hurt_timer.start()
+		_got_hurt_oneshot = false
+
 
 func take_damage(damage_received):
 	_got_hurt = true
 	player_health -= damage_received
+	
 	if player_health < 0 and !_is_dead:
 		animation_player.play("death")
+		print("morri")
 		_is_dead = true
 		
 		
 func _on_attack_timer_timeout() -> void:
-	pass
+	is_attacking = false
+	atk_oneshot = false
+
+
+func _on_hurt_timer_timeout() -> void:
+	_got_hurt = false
+	_got_hurt_oneshot = true
