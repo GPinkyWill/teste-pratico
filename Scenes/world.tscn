@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://y5aacraps4s0"]
+[gd_scene load_steps=9 format=3 uid="uid://y5aacraps4s0"]
 
 [ext_resource type="PackedScene" uid="uid://bhxpbdyqyn06k" path="res://Scenes/tile_map.tscn" id="1_2davm"]
 [ext_resource type="PackedScene" uid="uid://c5k63wmms77ey" path="res://Scenes/player.tscn" id="1_3et5q"]
 [ext_resource type="PackedScene" uid="uid://na7fay0q2fdv" path="res://Scenes/armored_axeman.tscn" id="3_x0alb"]
+[ext_resource type="PackedScene" uid="uid://cq15p7eykfrwy" path="res://Scenes/start_game_over.tscn" id="4_bfsws"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fmkq2"]
 size = Vector2(914, 39)
@@ -51,3 +52,7 @@ shape = SubResource("RectangleShape2D_u7yku")
 [node name="Direita" type="CollisionShape2D" parent="Limitador_Cenario/StaticBody2D"]
 position = Vector2(696, 144.5)
 shape = SubResource("RectangleShape2D_tm0j2")
+
+[node name="Start_GameOver" parent="." node_paths=PackedStringArray("player", "enemy") instance=ExtResource("4_bfsws")]
+player = NodePath("../Player")
+enemy = NodePath("../Armored_Axeman")

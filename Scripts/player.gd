@@ -10,6 +10,7 @@ const friction = 540
 
 @onready var hurt_timer: Timer = $Hurt_Timer
 
+var gameStopped = true
 
 var is_attacking = false
 var atk_oneshot = false
@@ -23,6 +24,7 @@ var _is_dead = false
 
 
 func _physics_process(delta: float) -> void:
+	if gameStopped: return
 	var input_axis_h = Input.get_axis("ui_left","ui_right")
 	var input_axis_v = Input.get_axis("ui_up","ui_down")
 
