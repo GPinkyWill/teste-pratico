@@ -12,9 +12,13 @@ func Enter():
 
 func Physics_Update(delta:float):
 	var direction = player.global_position - enemy.global_position
+	if direction.x > 0:
+		enemy.sprite_2d.scale.x = 1
+	else:
+		enemy.sprite_2d.scale.x = -1
 	if enemy._is_dead:
 			Transitioned.emit(self,"Death")
-	if direction.length() < 75:
+	if direction.length() < 50:
 		enemy._is_on_fight = true
 		if player._is_dead:
 			Transitioned.emit(self,"Idle")

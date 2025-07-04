@@ -7,7 +7,7 @@ const friction = 540
 
 @onready var attack_timer: Timer = $Attack_Timer
 @onready var feet: CollisionShape2D = $feet
-
+@onready var jump_timer: Timer = $Jump_Timer
 @onready var hurt_timer: Timer = $Hurt_Timer
 
 var gameStopped = true
@@ -20,14 +20,18 @@ var _got_hurt = false
 var _got_hurt_oneshot = true
 var _is_dead = false
 
-
-
+var is_jumping = false
 
 func _physics_process(delta: float) -> void:
 	if gameStopped: return
 	var input_axis_h = Input.get_axis("ui_left","ui_right")
 	var input_axis_v = Input.get_axis("ui_up","ui_down")
-
+	
+	if Input.is_action_just_pressed("ui_jump") and !is_jumping:
+		is_jumping = true
+		jump_timer.start()
+	
+	
 	player_movement(input_axis_h,input_axis_v,delta)
 	player_attack()
 	update_animations(input_axis_h,input_axis_v)
@@ -49,14 +53,21 @@ func player_movement(input_axis_h,input_axis_v,delta):
 	else:
 		velocity.y = move_toward(velocity.y, 0, friction * delta)
 	
+	
+
+
 
 func player_attack():
 	if Input.is_action_just_pressed("ui_attack") and not is_attacking and not _is_dead:
 		is_attacking = true
-	
+		
 
 func update_animations (input_axis_h,input_axis_v):
 	if _is_dead: return
+	
+	if is_jumping:
+		animation_player.play("jump")
+		return
 	
 	if !is_attacking and !_got_hurt:
 		if input_axis_h != 0 or input_axis_v != 0:
@@ -73,7 +84,9 @@ func update_animations (input_axis_h,input_axis_v):
 		animation_player.play("hurt")
 		hurt_timer.start()
 		_got_hurt_oneshot = false
-
+	
+	
+	
 
 func take_damage(damage_received):
 	_got_hurt = true
@@ -84,7 +97,9 @@ func take_damage(damage_received):
 		feet.disabled = true
 		_is_dead = true
 		
-		
+
+
+
 func _on_attack_timer_timeout() -> void:
 	is_attacking = false
 	atk_oneshot = false
@@ -93,3 +108,7 @@ func _on_attack_timer_timeout() -> void:
 func _on_hurt_timer_timeout() -> void:
 	_got_hurt = false
 	_got_hurt_oneshot = true
+
+
+func _on_jump_timer_timeout() -> void:
+	is_jumping = false
