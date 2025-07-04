@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://c5k63wmms77ey"]
+[gd_scene load_steps=13 format=3 uid="uid://c5k63wmms77ey"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ld8j1"]
 [ext_resource type="Texture2D" uid="uid://deqyvjr6dx8yv" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight Templar/Knight Templar/Knight Templar.png" id="2_u6024"]
 [ext_resource type="Script" path="res://Scripts/HitBox.gd" id="3_cn4l6"]
+[ext_resource type="Script" path="res://Scripts/HurtBox.gd" id="4_vo517"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kybs2"]
 size = Vector2(27, 20)
@@ -62,7 +63,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/4/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -74,7 +75,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/HitBox/CollisionShape2D:position")
+tracks/5/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -86,7 +87,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Sprite2D/HitBox/CollisionShape2D:scale")
+tracks/6/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -149,7 +150,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/4/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -161,7 +162,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/HitBox/CollisionShape2D:scale")
+tracks/5/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -173,7 +174,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Sprite2D/HitBox/CollisionShape2D:position")
+tracks/6/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -239,7 +240,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/4/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -251,7 +252,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/HitBox/CollisionShape2D:position")
+tracks/5/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -263,7 +264,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Sprite2D/HitBox/CollisionShape2D:scale")
+tracks/6/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:scale")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -328,7 +329,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/HitBox/CollisionShape2D:disabled")
+tracks/4/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -340,7 +341,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Sprite2D/HitBox/CollisionShape2D:scale")
+tracks/5/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:scale")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -352,7 +353,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Sprite2D/HitBox/CollisionShape2D:position")
+tracks/6/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -373,6 +374,9 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nf82r"]
 size = Vector2(10, 3)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksdnn"]
+size = Vector2(10, 17)
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
 collision_layer = 3
@@ -385,10 +389,11 @@ texture = ExtResource("2_u6024")
 hframes = 11
 vframes = 9
 
-[node name="HitBox" type="Area2D" parent="Sprite2D"]
+[node name="Player_HitBox" type="Area2D" parent="Sprite2D"]
+collision_mask = 2
 script = ExtResource("3_cn4l6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/HitBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Player_HitBox"]
 scale = Vector2(1e-05, 1e-05)
 shape = SubResource("RectangleShape2D_kybs2")
 disabled = true
@@ -407,5 +412,12 @@ shape = SubResource("RectangleShape2D_nf82r")
 [node name="Attack_Timer" type="Timer" parent="."]
 wait_time = 0.6
 one_shot = true
+
+[node name="HurtBox" type="Area2D" parent="."]
+script = ExtResource("4_vo517")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -7.5)
+shape = SubResource("RectangleShape2D_ksdnn")
 
 [connection signal="timeout" from="Attack_Timer" to="." method="_on_attack_timer_timeout"]
