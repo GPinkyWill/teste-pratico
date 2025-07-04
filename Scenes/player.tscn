@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://c5k63wmms77ey"]
+[gd_scene load_steps=16 format=3 uid="uid://c5k63wmms77ey"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ld8j1"]
 [ext_resource type="Texture2D" uid="uid://deqyvjr6dx8yv" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight Templar/Knight Templar/Knight Templar.png" id="2_u6024"]
 [ext_resource type="Script" path="res://Scripts/player_hit_box.gd" id="3_kced2"]
 [ext_resource type="Script" path="res://Scripts/player_hurt_box.gd" id="4_btp4r"]
+[ext_resource type="PackedScene" uid="uid://clfa2m6gg58pn" path="res://Scenes/health_bar.tscn" id="5_8sy56"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kybs2"]
 size = Vector2(27, 20)
@@ -563,7 +564,7 @@ collision_mask = 6
 script = ExtResource("1_ld8j1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -6)
+position = Vector2(0, -4)
 texture = ExtResource("2_u6024")
 hframes = 11
 vframes = 9
@@ -585,9 +586,15 @@ libraries = {
 }
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_left = -150
+limit_top = 0
+limit_right = 600
+limit_bottom = 250
+drag_horizontal_enabled = true
+drag_vertical_enabled = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -0.5)
+[node name="feet" type="CollisionShape2D" parent="."]
+position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_nf82r")
 
 [node name="Attack_Timer" type="Timer" parent="."]
@@ -599,12 +606,19 @@ collision_mask = 2
 script = ExtResource("4_btp4r")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player_HurtBox"]
-position = Vector2(0, -7.5)
+position = Vector2(0, -5.5)
 shape = SubResource("RectangleShape2D_ksdnn")
 
 [node name="Hurt_Timer" type="Timer" parent="."]
 wait_time = 0.4
 one_shot = true
+
+[node name="HealthBar" parent="." node_paths=PackedStringArray("character_health") instance=ExtResource("5_8sy56")]
+offset_left = -13.0
+offset_top = -23.0
+offset_right = 13.0
+offset_bottom = -18.0
+character_health = NodePath("..")
 
 [connection signal="timeout" from="Attack_Timer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="Hurt_Timer" to="." method="_on_hurt_timer_timeout"]

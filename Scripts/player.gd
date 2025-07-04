@@ -6,6 +6,7 @@ const friction = 540
 @onready var sprite_2d: Sprite2D = $Sprite2D
 
 @onready var attack_timer: Timer = $Attack_Timer
+@onready var feet: CollisionShape2D = $feet
 
 @onready var hurt_timer: Timer = $Hurt_Timer
 
@@ -13,7 +14,7 @@ const friction = 540
 var is_attacking = false
 var atk_oneshot = false
 
-var player_health = 50
+var health = 50
 var _got_hurt = false
 var _got_hurt_oneshot = true
 var _is_dead = false
@@ -74,11 +75,11 @@ func update_animations (input_axis_h,input_axis_v):
 
 func take_damage(damage_received):
 	_got_hurt = true
-	player_health -= damage_received
+	health -= damage_received
 	
-	if player_health < 0 and !_is_dead:
+	if health < 0 and !_is_dead:
 		animation_player.play("death")
-		print("morri")
+		feet.disabled = true
 		_is_dead = true
 		
 		

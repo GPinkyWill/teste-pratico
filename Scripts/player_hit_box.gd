@@ -2,4 +2,4 @@ extends HitBox
 
 
 func _ready() -> void:
-	damage = 10
+	damage = 9

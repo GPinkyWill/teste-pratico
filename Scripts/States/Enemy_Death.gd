@@ -1,4 +1,7 @@
 extends State
 class_name Enemy_Death
 
-func Enter():pass
+@onready var feet: CollisionShape2D = $"../../feet"
+
+func Enter():
+	feet.disabled = true

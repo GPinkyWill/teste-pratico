@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://na7fay0q2fdv"]
+[gd_scene load_steps=21 format=3 uid="uid://na7fay0q2fdv"]
 
 [ext_resource type="Script" path="res://Scripts/armored_axeman.gd" id="1_a1yq4"]
 [ext_resource type="Texture2D" uid="uid://c6wbp3q3xd0sf" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Armored Axeman/Armored Axeman/Armored Axeman.png" id="1_srt44"]
@@ -8,6 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/States/Enemy_Follow.gd" id="6_n7505"]
 [ext_resource type="Script" path="res://Scripts/States/Enemy_Death.gd" id="7_nn4a1"]
 [ext_resource type="Script" path="res://Scripts/enemy_hit_box.gd" id="9_byhmx"]
+[ext_resource type="PackedScene" uid="uid://clfa2m6gg58pn" path="res://Scenes/health_bar.tscn" id="10_24wwa"]
 [ext_resource type="Script" path="res://Scripts/enemy_hurt_box.gd" id="10_m1bf0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u1r72"]
@@ -405,6 +406,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [72, 73, 74, 75]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/Enemy_HitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g83a5"]
 _data = {
@@ -421,6 +434,7 @@ radius = 6.0
 height = 20.0
 
 [node name="Armored_Axeman" type="CharacterBody2D" groups=["enemy"]]
+y_sort_enabled = true
 collision_layer = 2
 script = ExtResource("1_a1yq4")
 
@@ -481,5 +495,12 @@ script = ExtResource("10_m1bf0")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_HurtBox"]
 position = Vector2(0, -7)
 shape = SubResource("CapsuleShape2D_gigcf")
+
+[node name="HealthBar" parent="." node_paths=PackedStringArray("character_health") instance=ExtResource("10_24wwa")]
+offset_left = -12.0
+offset_top = -24.0
+offset_right = 12.0
+offset_bottom = -20.0
+character_health = NodePath("..")
 
 [connection signal="timeout" from="Attack_CDR_Timer" to="." method="_on_attack_cdr_timer_timeout"]
