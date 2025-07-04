@@ -281,6 +281,11 @@ libraries = {
 }
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 5.0
+wait_time = 2.0
+
+[node name="TimerGameOver" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="TimerGameOver" to="." method="_on_timer_game_over_timeout"]
