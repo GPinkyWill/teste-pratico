@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://na7fay0q2fdv"]
+[gd_scene load_steps=23 format=3 uid="uid://na7fay0q2fdv"]
 
 [ext_resource type="Script" path="res://Scripts/armored_axeman.gd" id="1_a1yq4"]
 [ext_resource type="Texture2D" uid="uid://c6wbp3q3xd0sf" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Armored Axeman/Armored Axeman/Armored Axeman.png" id="1_srt44"]
@@ -10,12 +10,17 @@
 [ext_resource type="Script" path="res://Scripts/enemy_hit_box.gd" id="9_byhmx"]
 [ext_resource type="PackedScene" uid="uid://clfa2m6gg58pn" path="res://Scenes/health_bar.tscn" id="10_24wwa"]
 [ext_resource type="Script" path="res://Scripts/enemy_hurt_box.gd" id="10_m1bf0"]
+[ext_resource type="Script" path="res://Scripts/States/Enemy_Surprise.gd" id="11_b07rk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u1r72"]
 size = Vector2(7, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wcfvs"]
 size = Vector2(27, 34)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gigcf"]
+radius = 6.0
+height = 20.0
 
 [sub_resource type="Animation" id="Animation_i5h3o"]
 length = 0.001
@@ -102,6 +107,18 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05)]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Sprite2D:position")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -5)]
 }
 
 [sub_resource type="Animation" id="Animation_17ju2"]
@@ -191,6 +208,71 @@ tracks/6/keys = {
 "transitions": PackedFloat32Array(512, 349.706, 1060.11),
 "update": 0,
 "values": [Vector2(1e-05, 1e-05), Vector2(1, 1), Vector2(1e-05, 1e-05)]
+}
+
+[sub_resource type="Animation" id="Animation_ycdvp"]
+resource_name = "death"
+length = 0.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:hframes")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [12]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:vframes")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [7]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:frame_coords")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2i(0, 6)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [72, 73, 74, 75]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/Enemy_HitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_sy6n8"]
@@ -354,10 +436,9 @@ tracks/3/keys = {
 "values": [12, 13, 14, 15, 16, 17, 18, 19]
 }
 
-[sub_resource type="Animation" id="Animation_ycdvp"]
-resource_name = "death"
-length = 0.8
-step = 0.2
+[sub_resource type="Animation" id="Animation_dibl0"]
+resource_name = "jump"
+step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -392,7 +473,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [Vector2i(0, 6)]
+"values": [Vector2i(0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -401,22 +482,22 @@ tracks/3/path = NodePath("Sprite2D:frame")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.85, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [72, 73, 74, 75]
+"values": [0, 1, 2, 3, 4, 5]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D/Enemy_HitBox/CollisionShape2D:disabled")
+tracks/4/path = NodePath("Sprite2D:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(0.435275, 2, 1),
+"update": 0,
+"values": [Vector2(0, -5), Vector2(0, -25), Vector2(0, -5)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g83a5"]
@@ -426,12 +507,9 @@ _data = {
 "death": SubResource("Animation_ycdvp"),
 "hurt": SubResource("Animation_sy6n8"),
 "idle": SubResource("Animation_rfufb"),
+"jump": SubResource("Animation_dibl0"),
 "walk": SubResource("Animation_3nd3d")
 }
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_gigcf"]
-radius = 6.0
-height = 20.0
 
 [node name="Armored_Axeman" type="CharacterBody2D" groups=["enemy"]]
 y_sort_enabled = true
@@ -459,6 +537,22 @@ attacker = NodePath("../..")
 scale = Vector2(1e-05, 1e-05)
 shape = SubResource("RectangleShape2D_wcfvs")
 disabled = true
+
+[node name="HealthBar" parent="Sprite2D" node_paths=PackedStringArray("character_health") instance=ExtResource("10_24wwa")]
+offset_left = -12.0
+offset_top = -19.0
+offset_right = 12.0
+offset_bottom = -15.0
+character_health = NodePath("../..")
+
+[node name="Enemy_HurtBox" type="Area2D" parent="Sprite2D"]
+position = Vector2(0, 5)
+collision_layer = 0
+script = ExtResource("10_m1bf0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Enemy_HurtBox"]
+position = Vector2(0, -7)
+shape = SubResource("CapsuleShape2D_gigcf")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
@@ -488,19 +582,11 @@ enemy = NodePath("../..")
 [node name="Death" type="Node" parent="State_Machine"]
 script = ExtResource("7_nn4a1")
 
-[node name="Enemy_HurtBox" type="Area2D" parent="."]
-collision_layer = 0
-script = ExtResource("10_m1bf0")
+[node name="Surprise" type="Node" parent="State_Machine" node_paths=PackedStringArray("enemy")]
+script = ExtResource("11_b07rk")
+enemy = NodePath("../..")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy_HurtBox"]
-position = Vector2(0, -7)
-shape = SubResource("CapsuleShape2D_gigcf")
-
-[node name="HealthBar" parent="." node_paths=PackedStringArray("character_health") instance=ExtResource("10_24wwa")]
-offset_left = -12.0
-offset_top = -24.0
-offset_right = 12.0
-offset_bottom = -20.0
-character_health = NodePath("..")
+[node name="Jump_Timer" type="Timer" parent="."]
 
 [connection signal="timeout" from="Attack_CDR_Timer" to="." method="_on_attack_cdr_timer_timeout"]
+[connection signal="timeout" from="Jump_Timer" to="." method="_on_jump_timer_timeout"]

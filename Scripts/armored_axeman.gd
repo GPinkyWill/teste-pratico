@@ -3,12 +3,15 @@ extends CharacterBody2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Sprite2D
 @onready var attack_cdr_timer: Timer = $Attack_CDR_Timer
+@onready var jump_timer: Timer = $Jump_Timer
 
 var _is_on_fight = false
 var _is_ready = true
 var _got_hurt = false
 var health = 20
 var _is_dead = false
+var is_jumping = false
+
 func _ready() -> void:
 	pass
 func _physics_process(delta: float) -> void:
@@ -19,6 +22,9 @@ func _physics_process(delta: float) -> void:
 func update_animations():
 	if _is_dead: return
 	
+	if is_jumping: 
+		animation_player.play("jump")
+		return
 	if velocity.x > 0:
 		sprite_2d.scale.x = 1
 	elif velocity.x < 0:
@@ -51,3 +57,7 @@ func take_damage(damage_received):
 
 func _on_attack_cdr_timer_timeout() -> void:
 	_is_ready = true
+
+
+func _on_jump_timer_timeout() -> void:
+	is_jumping = false

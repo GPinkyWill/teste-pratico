@@ -53,4 +53,4 @@ func Physics_Update(delta:float):
 	var direction = player.global_position - enemy.global_position
 	if player._is_dead: return
 	if direction.length() < 75:
-		Transitioned.emit(self,"Follow")
+		Transitioned.emit(self,"Surprise")
