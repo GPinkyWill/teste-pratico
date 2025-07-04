@@ -1,9 +1,9 @@
-[gd_scene load_steps=13 format=3 uid="uid://c5k63wmms77ey"]
+[gd_scene load_steps=14 format=3 uid="uid://c5k63wmms77ey"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ld8j1"]
 [ext_resource type="Texture2D" uid="uid://deqyvjr6dx8yv" path="res://Assets/Tiny RPG Character Asset Pack v1.03 -Full 20 Characters/Characters(100x100)/Knight Templar/Knight Templar/Knight Templar.png" id="2_u6024"]
-[ext_resource type="Script" path="res://Scripts/HitBox.gd" id="3_cn4l6"]
-[ext_resource type="Script" path="res://Scripts/HurtBox.gd" id="4_vo517"]
+[ext_resource type="Script" path="res://Scripts/player_hit_box.gd" id="3_kced2"]
+[ext_resource type="Script" path="res://Scripts/player_hurt_box.gd" id="4_btp4r"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_kybs2"]
 size = Vector2(27, 20)
@@ -363,10 +363,100 @@ tracks/6/keys = {
 "values": [Vector2(0, 0), Vector2(18.5, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_iwckd"]
+resource_name = "hurt"
+length = 0.8
+step = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame_coords")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.4, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [Vector2i(0, 7), Vector2i(1, 7), Vector2i(2, 7), Vector2i(3, 7)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Sprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(),
+"transitions": PackedFloat32Array(),
+"update": 1,
+"values": []
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Sprite2D:hframes")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [11]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:vframes")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [9]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Sprite2D/Player_HitBox/CollisionShape2D:scale")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1e-05, 1e-05)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_n7vda"]
 _data = {
 "RESET": SubResource("Animation_fkq60"),
 "attack_front": SubResource("Animation_wc50r"),
+"hurt": SubResource("Animation_iwckd"),
 "idle": SubResource("Animation_c3kc8"),
 "walk_01": SubResource("Animation_eytvj")
 }
@@ -379,8 +469,7 @@ size = Vector2(10, 17)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 y_sort_enabled = true
-collision_layer = 3
-collision_mask = 3
+collision_mask = 6
 script = ExtResource("1_ld8j1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -389,9 +478,10 @@ texture = ExtResource("2_u6024")
 hframes = 11
 vframes = 9
 
-[node name="Player_HitBox" type="Area2D" parent="Sprite2D"]
-collision_mask = 2
-script = ExtResource("3_cn4l6")
+[node name="Player_HitBox" type="Area2D" parent="Sprite2D" node_paths=PackedStringArray("attacker")]
+position = Vector2(0, 6)
+script = ExtResource("3_kced2")
+attacker = NodePath("../..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sprite2D/Player_HitBox"]
 scale = Vector2(1e-05, 1e-05)
@@ -413,10 +503,10 @@ shape = SubResource("RectangleShape2D_nf82r")
 wait_time = 0.6
 one_shot = true
 
-[node name="HurtBox" type="Area2D" parent="."]
-script = ExtResource("4_vo517")
+[node name="Player_HurtBox" type="Area2D" parent="."]
+script = ExtResource("4_btp4r")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player_HurtBox"]
 position = Vector2(0, -7.5)
 shape = SubResource("RectangleShape2D_ksdnn")
 
